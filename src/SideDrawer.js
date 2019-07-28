@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    background: '#565454'
   },
   drawer: {
     width: drawerWidth,
@@ -45,7 +46,7 @@ export default function SideDrawer() {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Clipped drawer
+            Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
