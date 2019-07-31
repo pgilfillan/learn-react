@@ -6,7 +6,7 @@ import FileList from './FileList'
 function StorageGET() {
     return (
         <div>
-                <p>Test GET</p>
+            <p>Test GET</p>
             <Divider/>
             <FileList/>
         </div>
