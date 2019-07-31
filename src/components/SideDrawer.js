@@ -5,7 +5,6 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -53,7 +52,7 @@ export default function SideDrawer() {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Link variant="h6" noWrap color="inherit" component={RouterLink} to="/">
+          <Link variant="h6" noWrap color="inherit" component={RouterLink} to="/" underline="none">
             Dashboard
           </Link>
         </Toolbar>

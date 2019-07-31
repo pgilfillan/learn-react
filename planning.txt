@@ -1,0 +1,44 @@
+Open questions
+--------------
+Databases?
+
+View page (+ delete)
+---------
+Dropdown: classes
+Radio buttons: User or Shared
+  - If user: dropdown of users (with search box for > ? users)
+Radio buttons: get all, get specific, search
+  - If search: query text box
+    - Link to Mongo query docs (?)
+  - If specific: dropdown of documents
+                 search box
+Divider
+If search or all: List of expandables with doc name
+                    - doc contents
+                      metadata (?)
+                      delete button
+                    ...
+If specifc: doc contents
+            metadata (?)
+            delete button
+
+Upload page
+-----------
+Dropdown of classes or input box
+Radio buttons: User or Shared
+  - If user: dropdown of users (with search box for > ? users) or input box
+Document name input box
+Radio buttons: from file or direct input
+  - If from file, Choose File button opens up file explorer
+If from direct input, text box
+Upload button
+[Success/failure message]
+
+Storage Landing page
+--------------------
+Maybe for all of these:
+- Download DB backup
+- Upload DB backup
+- Version
+  - Link to RN
+- MongoDB address

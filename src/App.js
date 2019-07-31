@@ -1,8 +1,13 @@
 import React from 'react';
-import SideDrawer from './SideDrawer';
+import SideDrawer from './components/SideDrawer';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
-  return <SideDrawer />;
+  return (
+    <BrowserRouter>
+      <SideDrawer />
+    </BrowserRouter>
+  );
 }
 
 export default App;
