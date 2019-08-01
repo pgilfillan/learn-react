@@ -104,10 +104,10 @@ export default function SideDrawer() {
           </ListItem>
           <Collapse in={mmOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem button className={classes.nested} key="player_viewer" component={RouterLink} to="/player_viewer">
+              <ListItem button className={classes.nested} key="playerviewer" component={RouterLink} to="/playerviewer">
                 <ListItemText primary="Player Viewer" />
               </ListItem>
-              <ListItem button className={classes.nested} key="match_viewer" component={RouterLink} to="/match_viewer">
+              <ListItem button className={classes.nested} key="matchviewer" component={RouterLink} to="/matchviewer">
                 <ListItemText primary="Match Viewer" />
               </ListItem>
               <ListItem button className={classes.nested} key="config" component={RouterLink} to="/matchmaker/config">
