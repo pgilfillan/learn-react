@@ -10,11 +10,16 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import CloudIcon from '@material-ui/icons/Cloud';
+import PeopleIcon from '@material-ui/icons/People';
 import Link from '@material-ui/core/Link';
 import { Route, Link as RouterLink } from 'react-router-dom';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
 
-import StoragePUT from './StoragePUT'
-import StorageGET from './StorageGET'
+import StoragePUT from './storage-upload/StoragePUT'
+import StorageGET from './storage-view/StorageGET'
+import LandingPage from './LandingPage'
 
 const drawerWidth = 240;
 
@@ -37,15 +42,24 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
   toolbar: theme.mixins.toolbar,
 }));
 
-function Welcome(props) {
-  return <h1>Hello</h1>;
-}
-
 export default function SideDrawer() {
   const classes = useStyles();
+  const [storageOpen, storageSetOpen] = React.useState(false);
+  const [mmOpen, mmSetOpen] = React.useState(false);
+
+  function handleStorageClick() {
+    storageSetOpen(!storageOpen);
+  }
+
+  function handleMMClick() {
+    mmSetOpen(!mmOpen);
+  }
 
   return (
     <div className={classes.root}>
@@ -53,7 +67,7 @@ export default function SideDrawer() {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Link variant="h6" noWrap color="inherit" component={RouterLink} to="/" underline="none">
-            Dashboard
+            Kepler Dashboard
           </Link>
         </Toolbar>
       </AppBar>
@@ -67,24 +81,50 @@ export default function SideDrawer() {
       >
         <div className={classes.toolbar} />
         <List>
-          <ListItem button key="view" component={RouterLink} to="/test">
+          <ListItem button onClick={handleStorageClick}>
             <ListItemIcon><CloudIcon/></ListItemIcon>
-            <ListItemText primary="View Files" />
+            <ListItemText primary="Storage" />
+            {storageOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <ListItem button key="upload" component={RouterLink} to="/test2">
-            <ListItemIcon><CloudIcon/></ListItemIcon>
-            <ListItemText primary="Upload Files" />
+          <Collapse in={storageOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested} key="view" component={RouterLink} to="/view">
+                <ListItemText primary="View Files" />
+              </ListItem>
+              <ListItem button className={classes.nested} key="upload" component={RouterLink} to="/upload">
+                <ListItemText primary="Upload Files" />
+              </ListItem>
+            </List>
+          </Collapse>
+
+          <ListItem button onClick={handleMMClick}>
+            <ListItemIcon><PeopleIcon/></ListItemIcon>
+            <ListItemText primary="Matchmaker" />
+            {mmOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={mmOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested} key="player_viewer" component={RouterLink} to="/player_viewer">
+                <ListItemText primary="Player Viewer" />
+              </ListItem>
+              <ListItem button className={classes.nested} key="match_viewer" component={RouterLink} to="/match_viewer">
+                <ListItemText primary="Match Viewer" />
+              </ListItem>
+              <ListItem button className={classes.nested} key="config" component={RouterLink} to="/matchmaker/config">
+                <ListItemText primary="Configuration" />
+              </ListItem>
+            </List>
+          </Collapse>
+
         </List>
-        <Divider />
       </Drawer>
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
-        <Route path="/" exact component={Welcome} />
-        <Route path="/test" exact component={StorageGET} />
-        <Route path="/test2" component={StoragePUT} />
+        <Route path="/" exact component={LandingPage} />
+        <Route path="/view" exact component={StorageGET} />
+        <Route path="/upload" component={StoragePUT} />
       </main>
     </div>
   );
