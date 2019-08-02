@@ -1,8 +1,11 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import { FormControl, FormLabel, FormControlLabel, Radio, 
-         RadioGroup, TextField, Button, InputLabel, Select, MenuItem } from '@material-ui/core';
+         RadioGroup, TextField, Button, Select, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from "axios";
+
+import ResponseView from './ResponseView';
 
 const useStyles = makeStyles(theme => ({
 
@@ -13,28 +16,56 @@ function StoragePUT() {
 
   // State
   const [typeValue, setTypeValue] = React.useState('shared');
+  const [showUserName, setShowUserName] = React.useState(false);
+  const userInputStyle = showUserName ? {} : {display: 'none'};
   const [showDocName, setShowDocName] = React.useState(true);
   const docInputStyle = showDocName ? {} : {display: 'none'};
+  const [docName, setDocName] = React.useState('');
   const [dbValue, setDBValue] = React.useState("client-shared-storage");
   const [uploadTypeValue, setUploadTypeValue] = React.useState('input');
+  const [className, setClassName] = React.useState('');
+  const [docBody, setDocBody] = React.useState('');
+  const [userID, setUserID] = React.useState('');
+  const [responseReturn, setResponseReturn] = React.useState({});
 
   function handleTypeChange(event) {
-    setTypeValue(event.target.value);
+    const newStorageType = event.target.value;
+    setTypeValue(newStorageType);
+    newStorageType == 'user' ? setShowUserName(true) : setShowUserName(false);
   }
 
   function handleUploadTypeChange(event) {
     const newQueryType = event.target.value;
     setUploadTypeValue(newQueryType);
-    if (newQueryType == "input") {
-      setShowDocName(true);
-    } else {
-      setShowDocName(false);
-    }
+    newQueryType == "input" ? setShowDocName(true) : setShowDocName(false);
   }
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    console.log("/" + dbValue + "/v1/" + typeValue +  "/classes/<class>/documents/<docname>");
+    const ending = uploadTypeValue == "input" ? "/" + docName : "";
+    let path = "";
+    if (typeValue == "user") {
+        path = "/" + dbValue + "/v1/users/" + userID + "/classes/" + className + "/documents" + ending;
+    } else {
+        path = "/" + dbValue + "/v1/" + typeValue +  "/classes/" + className + "/documents" + ending;
+    }
+
+    const config = {headers: {
+      'Content-Type': 'application/json',
+    }}
+    if (uploadTypeValue == 'input') {
+        axios.put(path, docBody, config)
+        .then(response => {
+            setResponseReturn(response);
+        })
+        .catch(error => console.log(error));
+    } else {
+      axios.post(path, docBody, config)
+        .then(response => {
+            setResponseReturn(response);
+        })
+        .catch(error => console.log(error));
+    }
   }
 
   return (
@@ -64,8 +95,18 @@ function StoragePUT() {
             <FormControlLabel value="shared" control={<Radio color="primary" />} label="Shared" />
             <FormControlLabel value="user" control={<Radio color="primary" />} label="User" />
           </RadioGroup>
+          <TextField 
+            variant="outlined" 
+            label="User"
+            style={userInputStyle} 
+            onChange={(e) => {setUserID(e.target.value)}}
+          />
 
-          <TextField variant="outlined" label="Class" />
+          <TextField 
+            variant="outlined" 
+            label="Class"
+            onChange={(e) => {setClassName(e.target.value)}} 
+          />
           <Divider />
 
           <Divider />
@@ -79,16 +120,28 @@ function StoragePUT() {
             <FormControlLabel value="input" control={<Radio color="primary" />} label="Input Document Name" />
             <FormControlLabel value="generate" control={<Radio color="primary" />} label="Generate" />
           </RadioGroup>
-          <TextField variant="outlined" label="Document Name" style={docInputStyle}/>
+          <TextField 
+            variant="outlined" 
+            label="Document Name" 
+            style={docInputStyle}
+            onChange={(e) => {setDocName(e.target.value)}}
+          />
 
-          <TextField variant="outlined" multiline={true} rows={6} label="Document Body" />
+          <TextField 
+            variant="outlined" 
+            multiline={true} 
+            rows={6} 
+            label="Document Body" 
+            onChange={(e) => {setDocBody(e.target.value)}}
+          />
           <Divider />
           <Button variant="contained" color="primary" type="submit">
               Submit
           </Button>
         </FormControl>
-        <Divider />
       </form>
+      <Divider />
+      <ResponseView responseReturn={responseReturn} />
     </div>
   );
 }
