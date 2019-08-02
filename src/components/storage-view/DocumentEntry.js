@@ -1,7 +1,7 @@
 import React from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Button, Divider, GridList, GridListTile } from '@material-ui/core';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Button, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from "axios";
 

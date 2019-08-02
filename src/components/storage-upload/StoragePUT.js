@@ -8,7 +8,20 @@ import axios from "axios";
 import ResponseView from './ResponseView';
 
 const useStyles = makeStyles(theme => ({
-
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: "50%",
+    paddingBottom: 20,
+    marginTop: theme.spacing(3),
+  },
+  formEle: {
+    marginTop: theme.spacing(3),
+  },
+  formButton: {
+    marginTop: theme.spacing(3),
+    width: "30%"
+  }
 }));
 
 function StoragePUT() {
@@ -71,7 +84,7 @@ function StoragePUT() {
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
-        <FormControl>
+        <FormControl className={classes.root}>
           <FormLabel>Storage Source</FormLabel>
           <Select
             value={dbValue}
@@ -84,7 +97,7 @@ function StoragePUT() {
             <MenuItem value="server-user-storage">server-user-storage</MenuItem>
           </Select>
 
-          <FormLabel>Storage Type</FormLabel>
+          <FormLabel className={classes.formEle}>Storage Type</FormLabel>
           <RadioGroup
             aria-label="storage-type"
             name="storage-type-choices"
@@ -106,16 +119,16 @@ function StoragePUT() {
             variant="outlined" 
             label="Class"
             onChange={(e) => {setClassName(e.target.value)}} 
+            className={classes.formEle}
           />
-          <Divider />
 
-          <Divider />
           <RadioGroup
             value={uploadTypeValue}
             aria-label="search-type"
             name="search-type-choices"
             onChange={handleUploadTypeChange}
             row
+            className={classes.formEle}
           >
             <FormControlLabel value="input" control={<Radio color="primary" />} label="Input Document Name" />
             <FormControlLabel value="generate" control={<Radio color="primary" />} label="Generate" />
@@ -133,9 +146,10 @@ function StoragePUT() {
             rows={6} 
             label="Document Body" 
             onChange={(e) => {setDocBody(e.target.value)}}
+            className={classes.formEle}
           />
           <Divider />
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" color="primary" type="submit" className={classes.formButton}>
               Submit
           </Button>
         </FormControl>

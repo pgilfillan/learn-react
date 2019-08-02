@@ -1,11 +1,31 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import { FormControl, FormLabel, FormControlLabel, Radio, RadioGroup, TextField,
-         InputLabel, Select, MenuItem, Button } from '@material-ui/core';
+         Select, MenuItem, Button, Container } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import FileList from './FileList'
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: "50%",
+    paddingBottom: 20,
+    marginTop: theme.spacing(3),
+  },
+  formEle: {
+    marginTop: theme.spacing(3),
+  },
+  formButton: {
+    marginTop: theme.spacing(3),
+    width: "30%"
+  }
+}));
+
 function StorageGET() {
+  const classes = useStyles();
+
   // State
   const [typeValue, setTypeValue] = React.useState('shared');
   const [showUserName, setShowUserName] = React.useState(false);
@@ -20,6 +40,7 @@ function StorageGET() {
   const [dbValue, setDBValue] = React.useState("client-shared-storage");
   const [className, setClassName] = React.useState('');
   const [userID, setUserID] = React.useState('');
+  const [isSingleDoc, setIsSingleDoc] = React.useState(false);
   
   const [GETPath, setGETPath] = React.useState('');
 
@@ -63,14 +84,15 @@ function StorageGET() {
 
   function handleFormSubmit(event) {
     event.preventDefault();
+    queryTypeValue == "specific" ? setIsSingleDoc(true) : setIsSingleDoc(false);
     setGETPath(buildGETPath());
   }
 
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
-        <FormControl>
-          <InputLabel>Storage Source</InputLabel>
+        <FormControl className={classes.root}>
+          <FormLabel>Storage Source</FormLabel>
           <Select
             value={dbValue}
             onChange={(e) => {setDBValue(e.target.value)}}
@@ -82,7 +104,7 @@ function StorageGET() {
             <MenuItem value="server-user-storage">server-user-storage</MenuItem>
           </Select>
 
-          <FormLabel component="legend">Storage Type</FormLabel>
+          <FormLabel className={classes.formEle}>Storage Type</FormLabel>
           <RadioGroup
             aria-label="storage-type"
             name="storage-type-choices"
@@ -104,14 +126,15 @@ function StorageGET() {
             variant="outlined" 
             label="Class"
             onChange={(e) => {setClassName(e.target.value)}}
+            className={classes.formEle}
           />
-          <Divider />
 
           <RadioGroup
             aria-label="search-type"
             name="search-type-choices"
             value={queryTypeValue}
             onChange={handleQueryTypeChange}
+            className={classes.formEle}
           >
             <FormControlLabel value="all" control={<Radio color="primary" />} label="Get All" />
             <FormControlLabel value="specific" control={<Radio color="primary" />} label="Get Specific" />
@@ -129,13 +152,13 @@ function StorageGET() {
               onChange={(e) => {setQuery(e.target.value)}}
             />
           </RadioGroup>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" color="primary" type="submit" className={classes.formButton}>
             Find
           </Button>
-        </FormControl>
+        </FormControl >
       </form>
       <Divider />
-      <FileList path={GETPath}/>
+      <FileList path={GETPath} isSingleDoc={isSingleDoc} />
     </div>
   );
 }
