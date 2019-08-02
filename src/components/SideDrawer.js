@@ -20,6 +20,7 @@ import Collapse from '@material-ui/core/Collapse';
 import StoragePUT from './storage-upload/StoragePUT'
 import StorageGET from './storage-view/StorageGET'
 import LandingPage from './LandingPage'
+import MMConfig from './MMConfig'
 
 const drawerWidth = 240;
 
@@ -104,10 +105,10 @@ export default function SideDrawer() {
           </ListItem>
           <Collapse in={mmOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem button className={classes.nested} key="playerviewer" component={RouterLink} to="/playerviewer">
+              <ListItem button className={classes.nested} key="playerviewer" to="/matchmaker/viewer/players.html">
                 <ListItemText primary="Player Viewer" />
               </ListItem>
-              <ListItem button className={classes.nested} key="matchviewer" component={RouterLink} to="/matchviewer">
+              <ListItem button className={classes.nested} key="matchviewer" to="/matchmaker/viewer">
                 <ListItemText primary="Match Viewer" />
               </ListItem>
               <ListItem button className={classes.nested} key="config" component={RouterLink} to="/matchmaker/config">
@@ -125,6 +126,7 @@ export default function SideDrawer() {
         <Route path="/" exact component={LandingPage} />
         <Route path="/view" exact component={StorageGET} />
         <Route path="/upload" component={StoragePUT} />
+        <Route path="/matchmaker/config" component={MMConfig} />
       </main>
     </div>
   );

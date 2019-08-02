@@ -11,7 +11,7 @@ ENV PUBLIC_URL=
 
 # install and cache app dependencies
 COPY . /usr/src/app
-RUN npm install --silent
+RUN npm install
 
 RUN npm run build
 

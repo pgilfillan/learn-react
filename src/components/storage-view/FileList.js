@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import { Button, ButtonGroup, Popper, Paper, Grow, 
-         ClickAwayListener, MenuList, MenuItem } from '@material-ui/core';
+         ClickAwayListener, MenuList, MenuItem, Typography } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
@@ -31,6 +31,10 @@ function FileList(props) {
     setOpen(false);
   }
 
+  function handleRefreshClick() {
+    find();
+  }
+
   function find() {
     if (props.path == '') return;
 
@@ -49,7 +53,7 @@ function FileList(props) {
     return (
       <div>
         <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
-          <Button><RefreshIcon /></Button>
+          <Button onClick={handleRefreshClick}><RefreshIcon /></Button>
           <Button
             color="primary"
             variant="contained"
@@ -94,17 +98,27 @@ function FileList(props) {
 
   function getContent() {
     if (props.path == '') {
-      
+      //return <div>{getRefreshMenu()}</div>
     } else if (documents.length == 0) {
-      //return <div>{getRefreshMenu()}No documents found</div>
+      return <div>{getRefreshMenu()}<Typography>No documents found</Typography></div>
     }
 
-    const documentsTest = [{document: {"vehicle_name": "tank", "speed": 10}, "name": "sdfjsdof", "self": "koifnsdf"},
-                     {document: {"vehicle_name": "tank2", "speed": 112}, "name": "sdfjsdsfgdof", "self": "koifnsdfsdf"}]
+    //const documentsTest = [{document: {"vehicle_name": "tank", "speed": 10}, "name": "sdfjsdof", "self": "/koifnsdf"},
+    //                 {document: {"vehicle_name": "tank2", "speed": 112}, "name": "sdfjsdsfgdof", "self": "/koifnsdfsdf"}]
     return (
       <div>
         {getRefreshMenu()}
-        {documentsTest.map((doc, i) => <DocumentEntry key={i} name={doc["name"]} data={doc["document"]}></DocumentEntry>)}
+        {documents.map((doc, i) => {
+            return (
+              <DocumentEntry 
+                key={i} 
+                name={doc["name"]} 
+                data={doc["document"]} 
+                self={doc["self"]} 
+                storageSource={props.path.split("/")[1]}
+              />
+            );
+        })}
       </div>
     );
   }
